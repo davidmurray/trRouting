@@ -24,6 +24,7 @@ namespace TrRouting
   static const int DEFAULT_MAX_TOTAL_TIME = MAX_INT;
   static const int DEFAULT_MAX_ACCESS_TRAVEL_TIME = 20 * 60;
   static const int DEFAULT_MAX_EGRESS_TRAVEL_TIME = 20 * 60;
+  static const int DEFAULT_MAX_NUMBER_OF_TRANSFERS = MAX_INT;
   static const int DEFAULT_MAX_TRANSFER_TRAVEL_TIME = 20 * 60;
   // 30 minutes: Buffer time added to time_of_trip when searching for first/last connections within the trip
   static const int DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER = 30 * 60;
@@ -78,6 +79,7 @@ namespace TrRouting
       int maxTotalTravelTimeSeconds;
       int maxAccessWalkingTravelTimeSeconds;
       int maxEgressWalkingTravelTimeSeconds;
+      int maxNumberOfTransfers;
       int maxTransferWalkingTravelTimeSeconds;
       int maxInnerTimeOfTripBufferSeconds;
 
@@ -106,6 +108,7 @@ namespace TrRouting
         int maxTotalTime,
         int maxAccessTime,
         int maxEgressTime,
+        int maxNumberOfTransfers,
         int maxTransferTime,
         int maxTimeOfTripBuffer,
         bool forward
@@ -118,6 +121,7 @@ namespace TrRouting
       int getMaxTotalTravelTimeSeconds() const { return maxTotalTravelTimeSeconds; }
       int getMaxAccessWalkingTravelTimeSeconds() const { return maxAccessWalkingTravelTimeSeconds; }
       int getMaxEgressWalkingTravelTimeSeconds() const { return maxEgressWalkingTravelTimeSeconds; }
+      int getMaxNumberOfTransfers() const { return maxNumberOfTransfers; }
       int getMaxTransferWalkingTravelTimeSeconds() const { return maxTransferWalkingTravelTimeSeconds; }
       /**
        * @brief Gets the value of the inner time of trip buffer, in seconds
@@ -175,6 +179,7 @@ namespace TrRouting
         int maxTotalTime,
         int maxAccessTime,
         int maxEgressTime,
+        int maxNumberOfTransfers,
         int maxTransferTime,
         int maxFirstWaitingTime,
         bool alternatives,
@@ -227,6 +232,7 @@ namespace TrRouting
         int maxTotalTime,
         int maxAccessTime,
         int maxEgressTime,
+        int maxNumberOfTransfers,
         int maxTransferTime,
         int maxFirstWaitingTime,
         bool forward

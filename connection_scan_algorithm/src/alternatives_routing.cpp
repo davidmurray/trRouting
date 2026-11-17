@@ -110,7 +110,11 @@ namespace TrRouting
     SingleCalculationResult& routingResult = *result.get();
     AlternativesResult alternatives = AlternativesResult();
 
-    alternatives.alternatives.push_back(std::move(result));
+    const int maxNumberOfTransfers = parameters.getMaxNumberOfTransfers();
+    if (routingResult.numberOfTransfers <= maxNumberOfTransfers)
+    {
+      alternatives.alternatives.push_back(std::move(result));
+    }
 
     alternativeSequence++;
     alternativesCalculatedCount++;
@@ -139,6 +143,7 @@ namespace TrRouting
       maxTravelTime,
       parameters.getMaxAccessWalkingTravelTimeSeconds(),
       parameters.getMaxEgressWalkingTravelTimeSeconds(),
+      parameters.getMaxNumberOfTransfers(),
       parameters.getMaxTransferWalkingTravelTimeSeconds(),
       parameters.getMaxInnerTimeOfTripBufferSeconds(),
       parameters.isForwardCalculation()
@@ -194,16 +199,19 @@ namespace TrRouting
 
         if (foundLines.size() > 0 && alreadyFoundLines.count(foundLines) == 0)
         {
-          alternatives.alternatives.push_back(std::move(result));
-
-          spdlog::debug("travelTimeSeconds: {}  line Uuids: {}",
-                        alternativeCalcResult.totalTravelTime,
-                        LinesToString(foundLines));
-
+          if (maxNumberOfTransfers == -1 ||
+              alternativeCalcResult.numberOfTransfers <= maxNumberOfTransfers)
+          {
+            alternatives.alternatives.push_back(std::move(result));
             lastFoundedAtNum = alternativesCalculatedCount;
-            alreadyFoundLines[foundLines] = true;
-            // Generate new combinations from the new foundlines
-            generateCombinations(foundLines, combination, failedCombinations, allCombinations, alreadyCalculatedCombinations);
+            spdlog::debug("travelTimeSeconds: {}  line Uuids: {}",
+                          alternativeCalcResult.totalTravelTime,
+                          LinesToString(foundLines));
+          }
+
+          alreadyFoundLines[foundLines] = true;
+          // Generate new combinations from the new foundlines
+          generateCombinations(foundLines, combination, failedCombinations, allCombinations, alreadyCalculatedCombinations);
 
           alternativeSequence++;
 

@@ -16,15 +16,17 @@ namespace TrRouting
     int maxTotalTime,
     int maxAccessTime,
     int maxEgressTime,
+    int maxNumberOfTransfers,
     int maxTransferTime,
     int maxFirstWaitingTime,
-    bool forward) : 
+    bool forward) :
         CommonParameters(scenario_,
                       _timeOfTrip,
                       minWaitingTime,
                       maxTotalTime,
                       maxAccessTime,
                       maxEgressTime,
+                      maxNumberOfTransfers,
                       maxTransferTime,
                       maxFirstWaitingTime,
                       forward),

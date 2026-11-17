@@ -14,6 +14,7 @@ namespace TrRouting
     int maxTotalTime,
     int maxAccessTime,
     int maxEgressTime,
+    int maxNumberOfTransfers,
     int maxTransferTime,
     int maxFirstWaitingTime,
     bool forward) :
@@ -23,6 +24,7 @@ namespace TrRouting
         maxTotalTravelTimeSeconds(maxTotalTime),
         maxAccessWalkingTravelTimeSeconds(maxAccessTime),
         maxEgressWalkingTravelTimeSeconds(maxEgressTime),
+        maxNumberOfTransfers(maxNumberOfTransfers),
         maxTransferWalkingTravelTimeSeconds(maxTransferTime),
         maxInnerTimeOfTripBufferSeconds(maxFirstWaitingTime),
         forwardCalculation(forward)
@@ -37,6 +39,7 @@ namespace TrRouting
     maxTotalTravelTimeSeconds(baseParams.maxTotalTravelTimeSeconds),
     maxAccessWalkingTravelTimeSeconds(baseParams.maxAccessWalkingTravelTimeSeconds),
     maxEgressWalkingTravelTimeSeconds(baseParams.maxEgressWalkingTravelTimeSeconds),
+    maxNumberOfTransfers(baseParams.maxNumberOfTransfers),
     maxTransferWalkingTravelTimeSeconds(baseParams.maxTransferWalkingTravelTimeSeconds),
     maxInnerTimeOfTripBufferSeconds(baseParams.maxInnerTimeOfTripBufferSeconds),
     scenarioUuid(baseParams.scenarioUuid),
@@ -77,6 +80,7 @@ namespace TrRouting
     int maxTotalTravelTimeSeconds = DEFAULT_MAX_TOTAL_TIME;
     int maxAccessWalkingTravelTimeSeconds = DEFAULT_MAX_ACCESS_TRAVEL_TIME;
     int maxEgressWalkingTravelTimeSeconds = DEFAULT_MAX_EGRESS_TRAVEL_TIME;
+    int maxNumberOfTransfers = DEFAULT_MAX_NUMBER_OF_TRANSFERS;
     int maxTransferWalkingTravelTimeSeconds = DEFAULT_MAX_TRANSFER_TRAVEL_TIME;
     int maxInnerTimeOfTripBufferSeconds = DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER; // Ignore all connections at access nodes (if forwardCalculation) or egress nodes (if reverse) if waiting time would be more than this value.
     bool forwardCalculation = true;
@@ -160,6 +164,15 @@ namespace TrRouting
         }
         continue;
       }
+      else if (parameterWithValue.first == "max_number_of_transfers")
+      {
+        maxNumberOfTransfers = CommonParameters::getIntegerValue(parameterWithValue.second);
+        if (maxNumberOfTransfers < 0)
+        {
+          maxNumberOfTransfers = MAX_INT;
+        }
+        continue;
+      }
       else if (parameterWithValue.first == "max_transfer_travel_time")
       {
         maxTransferWalkingTravelTimeSeconds = CommonParameters::getIntegerValue(parameterWithValue.second);
@@ -210,6 +223,7 @@ namespace TrRouting
       maxTotalTravelTimeSeconds,
       maxAccessWalkingTravelTimeSeconds,
       maxEgressWalkingTravelTimeSeconds,
+      maxNumberOfTransfers,
       maxTransferWalkingTravelTimeSeconds,
       maxInnerTimeOfTripBufferSeconds,
       forwardCalculation);

@@ -16,6 +16,7 @@ protected:
     static const int DEFAULT_MAX_TOTAL_TIME = TrRouting::MAX_INT;
     static const int DEFAULT_MAX_ACCESS_TRAVEL_TIME = 20 * 60;
     static const int DEFAULT_MAX_EGRESS_TRAVEL_TIME = 20 * 60;
+    static const int DEFAULT_MAX_NUMBER_OF_TRANSFERS = TrRouting::MAX_INT;
     static const int DEFAULT_MAX_TRANSFER_TRAVEL_TIME = 20 * 60;
     static const int DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER = 30 * 60;
 
@@ -50,6 +51,7 @@ TEST_F(AccessMapFixtureTests, AllNodesQueryNoNodeAtPlace)
         totalTravelTime,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         true
@@ -80,6 +82,7 @@ TEST_F(AccessMapFixtureTests, AllNodesQueryNoServiceAtPlace)
         totalTravelTime,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         false
@@ -110,6 +113,7 @@ TEST_F(AccessMapFixtureTests, SimpleAllNodesQuery)
         totalTravelTime,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         true
@@ -174,6 +178,7 @@ TEST_F(AccessMapFixtureTests, SimpleAllNodesQueryBackward)
         totalTravelTime,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         false

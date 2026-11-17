@@ -238,6 +238,8 @@ components:
               enum:
                 # Generic reason, when not possible to specify more
                 - NO_ROUTING_FOUND,
+                # No routing within transfer count limits
+                - NO_ROUTING_WITHIN_MAX_NUMBER_OF_TRANSFERS,
                 # No accessible node at origin
                 - NO_ACCESS_AT_ORIGIN,
                 # No accessible node at destination

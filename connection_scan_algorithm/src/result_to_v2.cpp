@@ -155,6 +155,9 @@ namespace TrRouting
       case NoRoutingReason::NO_ROUTING_FOUND:
         reason = NO_ROUTING_REASON_DEFAULT;
         break;
+      case NoRoutingReason::NO_ROUTING_WITHIN_MAX_NUMBER_OF_TRANSFERS:
+        reason = NO_ROUTING_WITHIN_MAX_NUMBER_OF_TRANSFERS;
+        break;
       case NoRoutingReason::NO_ACCESS_AT_ORIGIN:
         reason = NO_ROUTING_REASON_NO_ACCESS_AT_ORIGIN;
         break;

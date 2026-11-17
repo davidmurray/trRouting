@@ -19,6 +19,7 @@ namespace TrRouting
       parameters.getMaxTotalTravelTimeSeconds(),
       parameters.getMaxAccessWalkingTravelTimeSeconds(),
       parameters.getMaxEgressWalkingTravelTimeSeconds(),
+      parameters.getMaxNumberOfTransfers(),
       parameters.getMaxTransferWalkingTravelTimeSeconds(),
       parameters.getMaxInnerTimeOfTripBufferSeconds(),
       parameters.isForwardCalculation()
@@ -94,6 +95,13 @@ namespace TrRouting
         throw NoRoutingFoundException(NoRoutingReason::NO_ROUTING_FOUND);
       }
 
+    }
+
+    if (result &&
+        !parameters.isWithAlternatives() &&
+        result->numberOfTransfers > parameters.getMaxNumberOfTransfers())
+    {
+      throw NoRoutingFoundException(NoRoutingReason::NO_ROUTING_WITHIN_MAX_NUMBER_OF_TRANSFERS);
     }
 
     return result;

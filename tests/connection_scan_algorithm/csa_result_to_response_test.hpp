@@ -25,6 +25,7 @@ protected:
     inline static const int DEFAULT_MAX_TOTAL_TIME = TrRouting::MAX_INT;
     inline static const int DEFAULT_MAX_ACCESS_TRAVEL_TIME = 20 * 60;
     inline static const int DEFAULT_MAX_EGRESS_TRAVEL_TIME = 20 * 60;
+    inline static const int DEFAULT_MAX_NUMBER_OF_TRANSFERS = TrRouting::MAX_INT;
     inline static const int DEFAULT_MAX_TRANSFER_TRAVEL_TIME = 20 * 60;
     inline static const int DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER = 30 * 60;
     inline static const int DEFAULT_TIME = 8 * 60 * 60;

@@ -258,6 +258,8 @@ namespace TrRouting
     // TODO As the calculator supports more reasons, add more elements to this enum
     // Generic reason, when not possible to specify more
     NO_ROUTING_FOUND,
+    // No routing within max number of transfers limit
+    NO_ROUTING_WITHIN_MAX_NUMBER_OF_TRANSFERS,
     // No accessible node at origin
     NO_ACCESS_AT_ORIGIN,
     // No accessible node at destination

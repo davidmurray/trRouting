@@ -50,6 +50,7 @@ TEST_F(SingleTAndACalculationFixtureTests, TripWithTransfer)
         DEFAULT_MAX_TOTAL_TIME,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         false,
@@ -68,6 +69,34 @@ TEST_F(SingleTAndACalculationFixtureTests, TripWithTransfer)
         minWaitingTime + expectedTransferWaitingTime,
         expectedTransferWaitingTime,
         0);
+}
+
+TEST_F(SingleTAndACalculationFixtureTests, SingleRouteExceedingTransferLimitHasNoRouting)
+{
+    TrRouting::RouteParameters testParameters = TrRouting::RouteParameters(
+        std::make_unique<TrRouting::Point>(45.5242, -73.5817),
+        std::make_unique<TrRouting::Point>(45.5295, -73.624),
+        transitData.getScenarios().at(TestDataFetcher::scenarioUuid),
+        getTimeInSeconds(9, 45),
+        DEFAULT_MIN_WAITING_TIME,
+        DEFAULT_MAX_TOTAL_TIME,
+        DEFAULT_MAX_ACCESS_TRAVEL_TIME,
+        DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        0,
+        DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
+        DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
+        false,
+        true
+    );
+
+    try {
+        calculateOd(testParameters);
+        FAIL() << "Expected TrRouting::NoRoutingFoundException, no exception thrown";
+    } catch (TrRouting::NoRoutingFoundException const & e) {
+        assertNoRouting(e, TrRouting::NoRoutingReason::NO_ROUTING_WITHIN_MAX_NUMBER_OF_TRANSFERS);
+    } catch(...) {
+        FAIL() << "Expected TrRouting::NoRoutingFoundException, another type was thrown";
+    }
 }
 
 // Test from OD which includes a transfer to the same node, origin is further
@@ -96,6 +125,7 @@ TEST_F(SingleTAndACalculationFixtureTests, TripWithTransferButLineNotEnabled)
         DEFAULT_MAX_TOTAL_TIME,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         false,
@@ -137,6 +167,7 @@ TEST_F(SingleTAndACalculationFixtureTests, NoTransferMinTransferTime)
         DEFAULT_MAX_TOTAL_TIME,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         false,
@@ -178,6 +209,7 @@ TEST_F(SingleTAndACalculationFixtureTests, TripWithWalkingTransfer)
         DEFAULT_MAX_TOTAL_TIME,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         false,
@@ -217,6 +249,7 @@ TEST_F(SingleTAndACalculationFixtureTests, TripWithAlternatives)
         DEFAULT_MAX_TOTAL_TIME,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         true,
@@ -262,6 +295,29 @@ TEST_F(SingleTAndACalculationFixtureTests, TripWithAlternatives)
     );
 }
 
+TEST_F(SingleTAndACalculationFixtureTests, AlternativesDiscardRoutesOverTransferLimit)
+{
+    TrRouting::RouteParameters testParameters = TrRouting::RouteParameters(
+        std::make_unique<TrRouting::Point>(45.5242, -73.5817),
+        std::make_unique<TrRouting::Point>(45.5541, -73.6186),
+        transitData.getScenarios().at(TestDataFetcher::scenarioUuid),
+        getTimeInSeconds(9, 45),
+        DEFAULT_MIN_WAITING_TIME,
+        DEFAULT_MAX_TOTAL_TIME,
+        DEFAULT_MAX_ACCESS_TRAVEL_TIME,
+        DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        0,
+        DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
+        DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
+        true,
+        true
+    );
+
+    TrRouting::AlternativesResult routingResult = calculateWithAlternatives(testParameters);
+    ASSERT_EQ(1u, routingResult.alternatives.size());
+    EXPECT_EQ(0, routingResult.alternatives.front()->numberOfTransfers);
+}
+
 // Test a trip with alternatives, the same as TripWithAlternatives, but with a
 // max travel time just above the first alternative's, so that the second
 // alternative should not be present
@@ -288,6 +344,7 @@ TEST_F(SingleTAndACalculationFixtureTests, TripWithAlternativesTooLong)
         alt1TravelTime + 60,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         true,
@@ -335,6 +392,7 @@ TEST_P(TripWithAlternativesArrivalTimeTests, TripWithAlternativesArrivingBy)
         DEFAULT_MAX_TOTAL_TIME,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         true,
@@ -368,6 +426,7 @@ TEST_F(SingleTAndACalculationFixtureTests, TripWithNoRoutingAlternatives)
         DEFAULT_MAX_TOTAL_TIME,
         DEFAULT_MAX_ACCESS_TRAVEL_TIME,
         DEFAULT_MAX_EGRESS_TRAVEL_TIME,
+        DEFAULT_MAX_NUMBER_OF_TRANSFERS,
         DEFAULT_MAX_TRANSFER_TRAVEL_TIME,
         DEFAULT_MAX_INNER_TIME_OF_TRIP_BUFFER,
         true,
