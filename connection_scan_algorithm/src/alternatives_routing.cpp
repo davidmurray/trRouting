@@ -199,8 +199,7 @@ namespace TrRouting
 
         if (foundLines.size() > 0 && alreadyFoundLines.count(foundLines) == 0)
         {
-          if (maxNumberOfTransfers == -1 ||
-              alternativeCalcResult.numberOfTransfers <= maxNumberOfTransfers)
+          if (alternativeCalcResult.numberOfTransfers <= maxNumberOfTransfers)
           {
             alternatives.alternatives.push_back(std::move(result));
             lastFoundedAtNum = alternativesCalculatedCount;
